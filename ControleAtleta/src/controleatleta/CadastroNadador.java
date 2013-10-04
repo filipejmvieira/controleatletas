@@ -10,43 +10,39 @@ import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableModel;
 
-public class CadastroBoxeador extends javax.swing.JFrame {
+public class CadastroNadador extends javax.swing.JFrame {
 
     private final byte SEXO_MASCULINO_INDICE = 0;
     private final byte SEXO_FEMININO_INDICE = 1;
     private final char SEXO_MASCULINO_VALOR = 'M';
     private final char SEXO_FEMININO_VALOR = 'F';
-    private final byte CATEGORIA_AMADOR_INDICE = 0;
-    private final byte CATEGORIA_PROFISSIONAL_INDICE = 1;
-    private final char CATEGORIA_AMADOR_VALOR = 'A';
-    private final char CATEGORIA_PROFISSIONAL_VALOR = 'P';
-    private final byte ESTILO_ORTODOXO_INDICE = 0;
-    private final byte ESTILO_SOUTHPAW_INDICE = 1;
-    private final char ESTILO_ORTODOXO_VALOR = 'O';
-    private final char ESTILO_SOUTHPAW_VALOR = 'S';
+    private final byte CATEGORIA_JOVEM_INDICE = 0;
+    private final byte CATEGORIA_MASTER_INDICE = 1;
+    private final char CATEGORIA_JOVEM_VALOR = 'J';
+    private final char CATEGORIA_MASTER_VALOR = 'M';
     private DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-    private ControleBoxeador controleBoxeador;
-    private Boxeador umBoxeador;
+    private ControleNadador controleNadador;
+    private Nadador umNadador;
     private boolean modoAlteracao;
     private boolean novoRegistro;
     private DefaultListModel telefonesListModel;
     private DefaultListModel premiacaoListModel;
 
-    public CadastroBoxeador() {
+    public CadastroNadador() {
         initComponents();
         this.habilitarDesabilitarCampos();
-        this.controleBoxeador = new ControleBoxeador();
+        this.controleNadador = new ControleNadador();
         this.telefonesListModel = new DefaultListModel();
         this.jListTelefones.setModel(telefonesListModel);
         this.premiacaoListModel = new DefaultListModel();
         this.jListPremiacoes.setModel(premiacaoListModel);
-        this.jTableListaBoxeadores.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        this.jTableListaNadadores.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     }
 
     private void limparCampos() {
         jTextFieldAltura.setText("0.0");
         jTextFieldBairro.setText(null);
-        jTextFieldCategoriaPeso.setText(null);
+        jTextFieldCategoriaIdade.setText(null);
         jTextFieldCep.setText(null);
         jTextFieldCidade.setText(null);
         jTextFieldComplemento.setText(null);
@@ -62,66 +58,66 @@ public class CadastroBoxeador extends javax.swing.JFrame {
         jTextFieldPais.setText(null);
         jTextFieldPeso.setText("0.0");
         jTextFieldRg.setText(null);
-        jTextFieldTotalDerrotas.setText("0");
-        jTextFieldTotalDesistencias.setText("0");
-        jTextFieldTotalEmpates.setText("0");
-        jTextFieldTotalLutas.setText("0");
-        jTextFieldTotalNocaute.setText("0");
-        jTextFieldTotalVitorias.setText("0");
+        jTextFieldTotalMedalhasPrata.setText("0");
+        jTextFieldTotalMedalhasBronze.setText("0");
+        jTextFieldTotalMedalhasOuro.setText("0");
+        jTextFieldPes.setText("0.0");
+        jTextFieldTotalCompeticoesParticipadas.setText("0");
+        jTextFieldIdade.setText("0");
         telefonesListModel.clear();
         premiacaoListModel.clear();
         jComboBoxSexo.setSelectedIndex(0);
         jComboBoxCategoria.setSelectedIndex(0);
-        jComboBoxEstilo.setSelectedIndex(0);
-        this.atualizarCategoriaPeso();
+        
+        this.atualizarCategoriaIdade();
     }
 
     private void preencherCampos() {
         ArrayList<String> telefones;
         ArrayList<Premiacao> premiacoes;
 
-        jTextFieldAltura.setText(Double.toString(umBoxeador.getAltura()));
-        jTextFieldBairro.setText(umBoxeador.getEndereco().getBairro());
-        jTextFieldCategoriaPeso.setText(Double.toString(umBoxeador.getPeso()));
-        jTextFieldCep.setText(umBoxeador.getEndereco().getCep());
-        jTextFieldCidade.setText(umBoxeador.getEndereco().getCidade());
-        jTextFieldComplemento.setText(umBoxeador.getEndereco().getComplemento());
-        jTextFieldCpf.setText(umBoxeador.getCpf());
-        if (umBoxeador.getDataNascimento() == null) {
+        jTextFieldAltura.setText(Double.toString(umNadador.getAltura()));
+        jTextFieldBairro.setText(umNadador.getEndereco().getBairro());
+        jTextFieldCategoriaIdade.setText(Double.toString(umNadador.getPeso()));
+        jTextFieldCep.setText(umNadador.getEndereco().getCep());
+        jTextFieldCidade.setText(umNadador.getEndereco().getCidade());
+        jTextFieldComplemento.setText(umNadador.getEndereco().getComplemento());
+        jTextFieldCpf.setText(umNadador.getCpf());
+        if (umNadador.getDataNascimento() == null) {
             jTextFieldDataNascimento.setText(null);
         } else {
-            jTextFieldDataNascimento.setText(dateFormat.format(umBoxeador.getDataNascimento()));
+            jTextFieldDataNascimento.setText(dateFormat.format(umNadador.getDataNascimento()));
         }
-        jTextFieldEnvergadura.setText(Double.toString(umBoxeador.getEnvergadura()));
-        jComboBoxEstado.setSelectedItem(umBoxeador.getEndereco().getEstado());
-        jTextFieldLogradouro.setText(umBoxeador.getEndereco().getLogradouro());
-        jTextFieldNome.setText(umBoxeador.getNome());
-        jTextFieldNomeMae.setText(umBoxeador.getNomeMae());
-        jTextFieldNomePai.setText(umBoxeador.getNomePai());
-        jTextFieldNumero.setText(umBoxeador.getEndereco().getNumero().toString());
-        jTextFieldPais.setText(umBoxeador.getEndereco().getPais());
-        jTextFieldPeso.setText(Double.toString(umBoxeador.getPeso()));
-        jTextFieldRg.setText(umBoxeador.getRg());
-        jTextFieldTotalDerrotas.setText(Integer.toString(umBoxeador.getTotalDerrotas()));
-        jTextFieldTotalDesistencias.setText(Integer.toString(umBoxeador.getTotalDesistencias()));
-        jTextFieldTotalEmpates.setText(Integer.toString(umBoxeador.getTotalEmpates()));
-        jTextFieldTotalLutas.setText(Integer.toString(umBoxeador.getTotalLutas()));
-        jTextFieldTotalNocaute.setText(Integer.toString(umBoxeador.getTotalVitoriasNocaute()));
-        jTextFieldTotalVitorias.setText(Integer.toString(umBoxeador.getTotalVitorias()));
+        jTextFieldEnvergadura.setText(Double.toString(umNadador.getEnvergadura()));
+        jComboBoxEstado.setSelectedItem(umNadador.getEndereco().getEstado());
+        jTextFieldLogradouro.setText(umNadador.getEndereco().getLogradouro());
+        jTextFieldNome.setText(umNadador.getNome());
+        jTextFieldNomeMae.setText(umNadador.getNomeMae());
+        jTextFieldNomePai.setText(umNadador.getNomePai());
+        jTextFieldNumero.setText(umNadador.getEndereco().getNumero().toString());
+        jTextFieldPais.setText(umNadador.getEndereco().getPais());
+        jTextFieldPeso.setText(Double.toString(umNadador.getPeso()));
+        jTextFieldRg.setText(umNadador.getRg());
+        jTextFieldTotalMedalhasPrata.setText(Integer.toString(umNadador.getTotalMedalhasPrata()));
+        jTextFieldTotalMedalhasBronze.setText(Integer.toString(umNadador.getTotalMedalhasBronze()));
+        jTextFieldTotalMedalhasOuro.setText(Integer.toString(umNadador.getTotalMedalhasOuro()));
+        jTextFieldPes.setText(Integer.toString(umNadador.getPes()));
+        jTextFieldTotalCompeticoesParticipadas.setText(Integer.toString(umNadador.getTotalCompeticoesParticipadas()));
+        jTextFieldIdade.setText(Integer.toString(umNadador.getIdade()));
 
         telefonesListModel.clear();
-        telefones = umBoxeador.getTelefones();
+        telefones = umNadador.getTelefones();
         for (String t : telefones) {
             telefonesListModel.addElement(t);
         }
 
         premiacaoListModel.clear();
-        premiacoes = umBoxeador.getPremiacoes();
+        premiacoes = umNadador.getPremiacoes();
         for (Premiacao p : premiacoes) {
             premiacaoListModel.addElement(p);
         }
 
-        switch (umBoxeador.getSexo()) {
+        switch (umNadador.getSexo()) {
             case SEXO_MASCULINO_VALOR:
                 jComboBoxSexo.setSelectedIndex(SEXO_MASCULINO_INDICE);
                 break;
@@ -130,25 +126,16 @@ public class CadastroBoxeador extends javax.swing.JFrame {
                 break;
         }
 
-        switch (umBoxeador.getCategoria()) {
-            case CATEGORIA_AMADOR_VALOR:
-                jComboBoxCategoria.setSelectedIndex(CATEGORIA_AMADOR_INDICE);
+        switch (umNadador.getCategoria()) {
+            case CATEGORIA_JOVEM_VALOR:
+                jComboBoxCategoria.setSelectedIndex(CATEGORIA_JOVEM_INDICE);
                 break;
-            case CATEGORIA_PROFISSIONAL_VALOR:
-                jComboBoxCategoria.setSelectedIndex(CATEGORIA_PROFISSIONAL_INDICE);
-                break;
-        }
-
-        switch (umBoxeador.getEstilo()) {
-            case ESTILO_ORTODOXO_VALOR:
-                jComboBoxEstilo.setSelectedIndex(ESTILO_ORTODOXO_INDICE);
-                break;
-            case ESTILO_SOUTHPAW_VALOR:
-                jComboBoxEstilo.setSelectedIndex(ESTILO_SOUTHPAW_INDICE);
+            case CATEGORIA_MASTER_VALOR:
+                jComboBoxCategoria.setSelectedIndex(CATEGORIA_MASTER_INDICE);
                 break;
         }
 
-        this.atualizarCategoriaPeso();
+        this.atualizarCategoriaIdade();
     }
 
     private boolean validarCampos() {
@@ -197,55 +184,55 @@ public class CadastroBoxeador extends javax.swing.JFrame {
             return false;
         }
         try {
-            Integer.parseInt(jTextFieldTotalDerrotas.getText());
+            Integer.parseInt(jTextFieldTotalMedalhasPrata.getText());
         } catch (Exception ex) {
-            this.exibirInformacao("O valor do campo 'Total de Derrotas' é inválido.");
-            jTextFieldTotalDerrotas.requestFocus();
+            this.exibirInformacao("O valor do campo 'Total de Medalhas de Prata' é inválido.");
+            jTextFieldTotalMedalhasPrata.requestFocus();
             return false;
         }
         try {
-            Integer.parseInt(jTextFieldTotalDesistencias.getText());
+            Integer.parseInt(jTextFieldTotalMedalhasBronze.getText());
         } catch (Exception ex) {
-            this.exibirInformacao("O valor do campo 'Total de Desistencias' é inválido.");
-            jTextFieldTotalDesistencias.requestFocus();
+            this.exibirInformacao("O valor do campo 'Total de Medalhas de Bronze' é inválido.");
+            jTextFieldTotalMedalhasBronze.requestFocus();
             return false;
         }
         try {
-            Integer.parseInt(jTextFieldTotalEmpates.getText());
+            Integer.parseInt(jTextFieldTotalMedalhasOuro.getText());
         } catch (Exception ex) {
-            this.exibirInformacao("O valor do campo 'Total de Empates' é inválido.");
-            jTextFieldTotalEmpates.requestFocus();
+            this.exibirInformacao("O valor do campo 'Total de Medalhas de Ouro' é inválido.");
+            jTextFieldTotalMedalhasOuro.requestFocus();
             return false;
         }
         try {
-            Integer.parseInt(jTextFieldTotalLutas.getText());
+            Integer.parseInt(jTextFieldPes.getText());
         } catch (Exception ex) {
-            this.exibirInformacao("O valor do campo 'Total de Lutas' é inválido.");
-            jTextFieldTotalLutas.requestFocus();
+            this.exibirInformacao("O valor do campo 'Tamanho dos Pés' é inválido.");
+            jTextFieldPes.requestFocus();
             return false;
         }
         try {
-            Integer.parseInt(jTextFieldTotalNocaute.getText());
+            Integer.parseInt(jTextFieldTotalCompeticoesParticipadas.getText());
         } catch (Exception ex) {
-            this.exibirInformacao("O valor do campo 'Total de Nocautes' é inválido.");
-            jTextFieldTotalNocaute.requestFocus();
+            this.exibirInformacao("O valor do campo 'Competições Participadas' é inválido.");
+            jTextFieldTotalCompeticoesParticipadas.requestFocus();
             return false;
         }
         try {
-            Integer.parseInt(jTextFieldTotalVitorias.getText());
+            Integer.parseInt(jTextFieldIdade.getText());
         } catch (Exception ex) {
-            this.exibirInformacao("O valor do campo 'Total de Vitórias' é inválido.");
-            jTextFieldTotalVitorias.requestFocus();
+            this.exibirInformacao("O valor do campo 'Idade' é inválido.");
+            jTextFieldIdade.requestFocus();
             return false;
         }
         return true;
     }
 
     private void habilitarDesabilitarCampos() {
-        boolean registroSelecionado = (umBoxeador != null);
+        boolean registroSelecionado = (umNadador != null);
         jTextFieldAltura.setEnabled(modoAlteracao);
         jTextFieldBairro.setEnabled(modoAlteracao);
-        jTextFieldCategoriaPeso.setEnabled(false);
+        jTextFieldCategoriaIdade.setEnabled(false);
         jTextFieldCep.setEnabled(modoAlteracao);
         jTextFieldCidade.setEnabled(modoAlteracao);
         jTextFieldComplemento.setEnabled(modoAlteracao);
@@ -261,12 +248,12 @@ public class CadastroBoxeador extends javax.swing.JFrame {
         jTextFieldPais.setEnabled(modoAlteracao);
         jTextFieldPeso.setEnabled(modoAlteracao);
         jTextFieldRg.setEnabled(modoAlteracao);
-        jTextFieldTotalDerrotas.setEnabled(modoAlteracao);
-        jTextFieldTotalDesistencias.setEnabled(modoAlteracao);
-        jTextFieldTotalEmpates.setEnabled(modoAlteracao);
-        jTextFieldTotalLutas.setEnabled(modoAlteracao);
-        jTextFieldTotalNocaute.setEnabled(modoAlteracao);
-        jTextFieldTotalVitorias.setEnabled(modoAlteracao);
+        jTextFieldTotalMedalhasPrata.setEnabled(modoAlteracao);
+        jTextFieldTotalMedalhasBronze.setEnabled(modoAlteracao);
+        jTextFieldTotalMedalhasOuro.setEnabled(modoAlteracao);
+        jTextFieldPes.setEnabled(modoAlteracao);
+        jTextFieldTotalCompeticoesParticipadas.setEnabled(modoAlteracao);
+        jTextFieldIdade.setEnabled(modoAlteracao);
         jButtonNovo.setEnabled(modoAlteracao == false);
         jButtonAlterar.setEnabled(modoAlteracao == false && registroSelecionado == true);
         jButtonExcluir.setEnabled(modoAlteracao == false && registroSelecionado == true);
@@ -279,8 +266,7 @@ public class CadastroBoxeador extends javax.swing.JFrame {
         jButtonRemoverPremiacao.setEnabled(modoAlteracao);
         jComboBoxSexo.setEnabled(modoAlteracao);
         jComboBoxCategoria.setEnabled(modoAlteracao);
-        jComboBoxEstilo.setEnabled(modoAlteracao);
-        jTableListaBoxeadores.setEnabled(modoAlteracao == false);
+        jTableListaNadadores.setEnabled(modoAlteracao == false);
     }
 
     private void salvarRegistro() {
@@ -326,57 +312,48 @@ public class CadastroBoxeador extends javax.swing.JFrame {
         }
 
         if (novoRegistro == true) {
-            umBoxeador = new Boxeador(jTextFieldNome.getText());
+            umNadador = new Nadador(jTextFieldNome.getText());
         } else {
-            umBoxeador.setNome(jTextFieldNome.getText());
+            umNadador.setNome(jTextFieldNome.getText());
         }
-        umBoxeador.setEndereco(endereco);
-        umBoxeador.setTelefones(telefones);
-        umBoxeador.setPremiacoes(premiacoes);
-        umBoxeador.setDataNascimento(dataNascimento);
-        umBoxeador.setAltura(Double.parseDouble(jTextFieldAltura.getText()));
-        umBoxeador.setNomeMae(jTextFieldNomeMae.getText());
-        umBoxeador.setNomePai(jTextFieldNomePai.getText());
-        umBoxeador.setPeso(Double.parseDouble(jTextFieldPeso.getText()));
-        umBoxeador.setCpf(jTextFieldCpf.getText());
-        umBoxeador.setRg(jTextFieldRg.getText());
-        umBoxeador.setEnvergadura(Double.parseDouble(jTextFieldEnvergadura.getText()));
-        umBoxeador.setTotalDerrotas(Integer.parseInt(jTextFieldTotalDerrotas.getText()));
-        umBoxeador.setTotalDesistencias(Integer.parseInt(jTextFieldTotalDesistencias.getText()));
-        umBoxeador.setTotalEmpates(Integer.parseInt(jTextFieldTotalEmpates.getText()));
-        umBoxeador.setTotalLutas(Integer.parseInt(jTextFieldTotalLutas.getText()));
-        umBoxeador.setTotalVitoriasNocaute(Integer.parseInt(jTextFieldTotalNocaute.getText()));
-        umBoxeador.setTotalVitorias(Integer.parseInt(jTextFieldTotalVitorias.getText()));
+        umNadador.setEndereco(endereco);
+        umNadador.setTelefones(telefones);
+        umNadador.setPremiacoes(premiacoes);
+        umNadador.setDataNascimento(dataNascimento);
+        umNadador.setAltura(Double.parseDouble(jTextFieldAltura.getText()));
+        umNadador.setNomeMae(jTextFieldNomeMae.getText());
+        umNadador.setNomePai(jTextFieldNomePai.getText());
+        umNadador.setPeso(Double.parseDouble(jTextFieldPeso.getText()));
+        umNadador.setCpf(jTextFieldCpf.getText());
+        umNadador.setRg(jTextFieldRg.getText());
+        umNadador.setEnvergadura(Double.parseDouble(jTextFieldEnvergadura.getText()));
+        umNadador.setTotalMedalhasPrata(Integer.parseInt(jTextFieldTotalMedalhasPrata.getText()));
+        umNadador.setTotalMedalhasBronze(Integer.parseInt(jTextFieldTotalMedalhasBronze.getText()));
+        umNadador.setTotalMedalhasOuro(Integer.parseInt(jTextFieldTotalMedalhasOuro.getText()));
+        umNadador.setPes(Integer.parseInt(jTextFieldPes.getText()));
+        umNadador.setTotalCompeticoesParticipadas(Integer.parseInt(jTextFieldTotalCompeticoesParticipadas.getText()));
+        umNadador.setIdade(Integer.parseInt(jTextFieldIdade.getText()));
 
         switch (jComboBoxSexo.getSelectedIndex()) {
             case SEXO_MASCULINO_INDICE:
-                umBoxeador.setSexo(SEXO_MASCULINO_VALOR);
+                umNadador.setSexo(SEXO_MASCULINO_VALOR);
                 break;
             case SEXO_FEMININO_INDICE:
-                umBoxeador.setSexo(SEXO_FEMININO_VALOR);
+                umNadador.setSexo(SEXO_FEMININO_VALOR);
                 break;
         }
 
         switch (jComboBoxCategoria.getSelectedIndex()) {
-            case CATEGORIA_AMADOR_INDICE:
-                umBoxeador.setCategoria(CATEGORIA_AMADOR_VALOR);
+            case CATEGORIA_JOVEM_INDICE:
+                umNadador.setCategoria(CATEGORIA_JOVEM_VALOR);
                 break;
-            case CATEGORIA_PROFISSIONAL_INDICE:
-                umBoxeador.setCategoria(CATEGORIA_PROFISSIONAL_VALOR);
-                break;
-        }
-
-        switch (jComboBoxEstilo.getSelectedIndex()) {
-            case ESTILO_ORTODOXO_INDICE:
-                umBoxeador.setEstilo(ESTILO_ORTODOXO_VALOR);
-                break;
-            case ESTILO_SOUTHPAW_INDICE:
-                umBoxeador.setEstilo(ESTILO_SOUTHPAW_VALOR);
+            case CATEGORIA_MASTER_INDICE:
+                umNadador.setCategoria(CATEGORIA_MASTER_VALOR);
                 break;
         }
-
+        
         if (novoRegistro == true) {
-            controleBoxeador.adicionar(umBoxeador);
+            controleNadador.adicionar(umNadador);
         }
         modoAlteracao = false;
         novoRegistro = false;
@@ -385,32 +362,32 @@ public class CadastroBoxeador extends javax.swing.JFrame {
     }
 
     private void carregarListaBoxeadores() {
-        ArrayList<Boxeador> listaBoxeadores = controleBoxeador.getListaBoxeadores();
-        DefaultTableModel model = (DefaultTableModel) jTableListaBoxeadores.getModel();
+        ArrayList<Nadador> listaBoxeadores = controleNadador.getListaNadadores();
+        DefaultTableModel model = (DefaultTableModel) jTableListaNadadores.getModel();
         model.setRowCount(0);
-        for (Boxeador b : listaBoxeadores) {
+        for (Nadador b : listaBoxeadores) {
             model.addRow(new String[]{b.getNome(), b.getCpf()});
         }
-        jTableListaBoxeadores.setModel(model);
+        jTableListaNadadores.setModel(model);
     }
 
     private void exibirInformacao(String info) {
         JOptionPane.showMessageDialog(this, info, "Atenção", JOptionPane.INFORMATION_MESSAGE);
     }
 
-    private void atualizarCategoriaPeso() {
+    private void atualizarCategoriaIdade() {
         char categoria;
         switch (jComboBoxCategoria.getSelectedIndex()) {
-            case CATEGORIA_AMADOR_INDICE:
-                categoria = CATEGORIA_AMADOR_VALOR;
+            case CATEGORIA_JOVEM_INDICE:
+                categoria = CATEGORIA_JOVEM_VALOR;
                 break;
-            case CATEGORIA_PROFISSIONAL_INDICE:
-                categoria = CATEGORIA_PROFISSIONAL_VALOR;
+            case CATEGORIA_MASTER_INDICE:
+                categoria = CATEGORIA_MASTER_VALOR;
                 break;
             default:
                 return;
         }
-        jTextFieldCategoriaPeso.setText(Boxeador.obterCategoriaPesoNome(categoria, Double.parseDouble(jTextFieldPeso.getText())));
+        jTextFieldCategoriaIdade.setText(Nadador.obterCategoriaIdade(categoria, Integer.parseInt(jTextFieldIdade.getText())));
     }
 
     @SuppressWarnings("unchecked")
@@ -465,24 +442,22 @@ public class CadastroBoxeador extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jLabelCategoria = new javax.swing.JLabel();
         jComboBoxCategoria = new javax.swing.JComboBox();
-        jLabelCategoriaPeso = new javax.swing.JLabel();
-        jLabelEstilo = new javax.swing.JLabel();
-        jComboBoxEstilo = new javax.swing.JComboBox();
+        jLabelCategoriaIdade = new javax.swing.JLabel();
         jTextFieldEnvergadura = new javax.swing.JTextField();
         jLabelEnvergadura = new javax.swing.JLabel();
-        jLabelTotalLutas = new javax.swing.JLabel();
-        jTextFieldTotalLutas = new javax.swing.JTextField();
-        jTextFieldTotalVitorias = new javax.swing.JTextField();
-        jLabelTotalVitorias = new javax.swing.JLabel();
-        jTextFieldTotalNocaute = new javax.swing.JTextField();
-        jLabelTotalVitoriasNocaute = new javax.swing.JLabel();
-        jTextFieldTotalEmpates = new javax.swing.JTextField();
-        jLabelTotalEmpates = new javax.swing.JLabel();
-        jLabelTotalDerrotas = new javax.swing.JLabel();
-        jTextFieldTotalDerrotas = new javax.swing.JTextField();
-        jLabelTotalDesistencias = new javax.swing.JLabel();
-        jTextFieldTotalDesistencias = new javax.swing.JTextField();
-        jTextFieldCategoriaPeso = new javax.swing.JTextField();
+        jLabelPes = new javax.swing.JLabel();
+        jTextFieldPes = new javax.swing.JTextField();
+        jTextFieldIdade = new javax.swing.JTextField();
+        jLabelIdade = new javax.swing.JLabel();
+        jTextFieldTotalCompeticoesParticipadas = new javax.swing.JTextField();
+        jLabelTotalCompeticoesParticipadas = new javax.swing.JLabel();
+        jTextFieldTotalMedalhasOuro = new javax.swing.JTextField();
+        jLabelTotalMedalhasOuro = new javax.swing.JLabel();
+        jLabelTotalMedalhasPrata = new javax.swing.JLabel();
+        jTextFieldTotalMedalhasPrata = new javax.swing.JTextField();
+        jLabelTotalMedalhasBronze = new javax.swing.JLabel();
+        jTextFieldTotalMedalhasBronze = new javax.swing.JTextField();
+        jTextFieldCategoriaIdade = new javax.swing.JTextField();
         jLabelPremiacoes = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jListPremiacoes = new javax.swing.JList();
@@ -493,9 +468,9 @@ public class CadastroBoxeador extends javax.swing.JFrame {
         jButtonExcluir = new javax.swing.JButton();
         jButtonSalvar = new javax.swing.JButton();
         jButtonPesquisar = new javax.swing.JButton();
-        jLabelListaBoxeadores = new javax.swing.JLabel();
+        jLabelListaNadadores = new javax.swing.JLabel();
         jScrollPane4 = new javax.swing.JScrollPane();
-        jTableListaBoxeadores = new javax.swing.JTable();
+        jTableListaNadadores = new javax.swing.JTable();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -609,7 +584,7 @@ public class CadastroBoxeador extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jTextFieldPeso, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 575, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 563, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jButtonAdicionarTelefone, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -703,18 +678,18 @@ public class CadastroBoxeador extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabelComplemento, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabelPais, javax.swing.GroupLayout.DEFAULT_SIZE, 69, Short.MAX_VALUE)
-                    .addComponent(jLabelCidade, javax.swing.GroupLayout.DEFAULT_SIZE, 69, Short.MAX_VALUE)
-                    .addComponent(jLabelBairro, javax.swing.GroupLayout.DEFAULT_SIZE, 69, Short.MAX_VALUE)
-                    .addComponent(jLabelNumero, javax.swing.GroupLayout.DEFAULT_SIZE, 69, Short.MAX_VALUE)
-                    .addComponent(jLabelCep, javax.swing.GroupLayout.DEFAULT_SIZE, 69, Short.MAX_VALUE)
-                    .addComponent(jLabelEstado, javax.swing.GroupLayout.DEFAULT_SIZE, 69, Short.MAX_VALUE)
-                    .addComponent(jLabelLogradouro, javax.swing.GroupLayout.DEFAULT_SIZE, 69, Short.MAX_VALUE))
+                    .addComponent(jLabelPais, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabelCidade, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabelBairro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabelNumero, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabelCep, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabelEstado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabelLogradouro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jTextFieldCidade, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextFieldBairro, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextFieldComplemento, javax.swing.GroupLayout.DEFAULT_SIZE, 706, Short.MAX_VALUE)
+                    .addComponent(jTextFieldComplemento, javax.swing.GroupLayout.DEFAULT_SIZE, 694, Short.MAX_VALUE)
                     .addComponent(jTextFieldNumero, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextFieldLogradouro, javax.swing.GroupLayout.DEFAULT_SIZE, 706, Short.MAX_VALUE)
                     .addComponent(jComboBoxEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -768,34 +743,53 @@ public class CadastroBoxeador extends javax.swing.JFrame {
 
         jLabelCategoria.setText("Categoria:");
 
-        jComboBoxCategoria.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Amador", "Profissional" }));
+        jComboBoxCategoria.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Jovem", "Master" }));
         jComboBoxCategoria.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBoxCategoriaActionPerformed(evt);
             }
         });
 
-        jLabelCategoriaPeso.setText("Categoria (Peso):");
+        jLabelCategoriaIdade.setText("Categoria (Idade):");
 
-        jLabelEstilo.setText("Estilo:");
-
-        jComboBoxEstilo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Ortodoxo (destro)", "Southpaw (canhoto)" }));
+        jTextFieldEnvergadura.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldEnvergaduraActionPerformed(evt);
+            }
+        });
 
         jLabelEnvergadura.setText("Envergadura:");
 
-        jLabelTotalLutas.setText("Total de Lutas:");
+        jLabelPes.setText("Tamanho dos Pés:");
 
-        jLabelTotalVitorias.setText("Total de Vitórias:");
+        jTextFieldIdade.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldIdadeActionPerformed(evt);
+            }
+        });
 
-        jLabelTotalVitoriasNocaute.setText("Total de Vitórias por Nocaute:");
+        jLabelIdade.setText("Idade:");
 
-        jLabelTotalEmpates.setText("Total de Empates:");
+        jLabelTotalCompeticoesParticipadas.setText("Total de Competições Participadas:");
 
-        jLabelTotalDerrotas.setText("Total de Derrotas:");
+        jLabelTotalMedalhasOuro.setText("Total de Medalhas de Ouro:");
 
-        jLabelTotalDesistencias.setText("Total de Desistencias:");
+        jLabelTotalMedalhasPrata.setText("Total de Medalhas de Prata :");
 
-        jTextFieldCategoriaPeso.setEnabled(false);
+        jLabelTotalMedalhasBronze.setText("Total de Medalhas de Bronze:");
+
+        jTextFieldTotalMedalhasBronze.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldTotalMedalhasBronzeActionPerformed(evt);
+            }
+        });
+
+        jTextFieldCategoriaIdade.setEnabled(false);
+        jTextFieldCategoriaIdade.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldCategoriaIdadeActionPerformed(evt);
+            }
+        });
 
         jLabelPremiacoes.setText("Premiações:");
 
@@ -823,93 +817,86 @@ public class CadastroBoxeador extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabelEnvergadura)
+                    .addComponent(jLabelPes)
+                    .addComponent(jLabelIdade)
+                    .addComponent(jLabelTotalCompeticoesParticipadas)
+                    .addComponent(jLabelTotalMedalhasOuro)
+                    .addComponent(jLabelTotalMedalhasPrata)
+                    .addComponent(jLabelTotalMedalhasBronze)
                     .addComponent(jLabelCategoria)
-                    .addComponent(jLabelCategoriaPeso)
-                    .addComponent(jLabelEstilo)
-                    .addComponent(jLabelTotalLutas)
-                    .addComponent(jLabelTotalVitorias)
-                    .addComponent(jLabelTotalVitoriasNocaute)
-                    .addComponent(jLabelTotalEmpates)
-                    .addComponent(jLabelTotalDerrotas)
-                    .addComponent(jLabelTotalDesistencias))
+                    .addComponent(jLabelCategoriaIdade))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextFieldTotalDesistencias, javax.swing.GroupLayout.DEFAULT_SIZE, 307, Short.MAX_VALUE)
-                    .addComponent(jTextFieldTotalDerrotas, javax.swing.GroupLayout.DEFAULT_SIZE, 307, Short.MAX_VALUE)
-                    .addComponent(jTextFieldTotalEmpates, javax.swing.GroupLayout.DEFAULT_SIZE, 307, Short.MAX_VALUE)
-                    .addComponent(jTextFieldTotalNocaute, javax.swing.GroupLayout.DEFAULT_SIZE, 307, Short.MAX_VALUE)
-                    .addComponent(jTextFieldTotalVitorias, javax.swing.GroupLayout.DEFAULT_SIZE, 307, Short.MAX_VALUE)
-                    .addComponent(jTextFieldTotalLutas, javax.swing.GroupLayout.DEFAULT_SIZE, 307, Short.MAX_VALUE)
-                    .addComponent(jTextFieldEnvergadura, javax.swing.GroupLayout.DEFAULT_SIZE, 307, Short.MAX_VALUE)
-                    .addComponent(jComboBoxEstilo, 0, 307, Short.MAX_VALUE)
-                    .addComponent(jTextFieldCategoriaPeso, javax.swing.GroupLayout.DEFAULT_SIZE, 307, Short.MAX_VALUE)
-                    .addComponent(jComboBoxCategoria, 0, 307, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabelPremiacoes)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jButtonRemoverPremiacao, javax.swing.GroupLayout.Alignment.LEADING, 0, 0, Short.MAX_VALUE)
-                            .addComponent(jButtonAdicionarPremiacao, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(jTextFieldCategoriaIdade)
+                    .addComponent(jTextFieldTotalMedalhasBronze, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
+                    .addComponent(jTextFieldTotalMedalhasPrata, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
+                    .addComponent(jTextFieldTotalMedalhasOuro, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
+                    .addComponent(jTextFieldTotalCompeticoesParticipadas, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
+                    .addComponent(jTextFieldIdade, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
+                    .addComponent(jTextFieldPes, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
+                    .addComponent(jTextFieldEnvergadura, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
+                    .addComponent(jComboBoxCategoria, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(96, 96, 96)
+                .addComponent(jLabelPremiacoes)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jButtonRemoverPremiacao, javax.swing.GroupLayout.Alignment.LEADING, 0, 0, Short.MAX_VALUE)
+                    .addComponent(jButtonAdicionarPremiacao, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
+                .addGap(46, 46, 46)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jComboBoxCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabelCategoria)
+                            .addComponent(jLabelEnvergadura)
+                            .addComponent(jTextFieldEnvergadura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabelPremiacoes))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabelCategoriaPeso)
-                            .addComponent(jTextFieldCategoriaPeso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabelPes)
+                            .addComponent(jTextFieldPes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jComboBoxEstilo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabelEstilo))
+                            .addComponent(jLabelIdade)
+                            .addComponent(jTextFieldIdade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabelEnvergadura)
-                            .addComponent(jTextFieldEnvergadura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabelTotalCompeticoesParticipadas)
+                            .addComponent(jTextFieldTotalCompeticoesParticipadas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabelTotalLutas)
-                            .addComponent(jTextFieldTotalLutas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabelTotalMedalhasOuro)
+                            .addComponent(jTextFieldTotalMedalhasOuro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabelTotalVitorias)
-                            .addComponent(jTextFieldTotalVitorias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabelTotalMedalhasPrata)
+                            .addComponent(jTextFieldTotalMedalhasPrata, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabelTotalVitoriasNocaute)
-                            .addComponent(jTextFieldTotalNocaute, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabelTotalMedalhasBronze)
+                            .addComponent(jTextFieldTotalMedalhasBronze, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabelCategoria)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabelTotalEmpates)
-                            .addComponent(jTextFieldTotalEmpates, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabelTotalDerrotas)
-                            .addComponent(jTextFieldTotalDerrotas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabelTotalDesistencias)
-                            .addComponent(jTextFieldTotalDesistencias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
-                        .addGap(46, 46, 46)
+                        .addComponent(jLabelCategoriaIdade, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
+                            .addGap(187, 187, 187)
+                            .addComponent(jComboBoxCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jTextFieldCategoriaIdade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(jButtonAdicionarPremiacao)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jButtonRemoverPremiacao))
-                            .addComponent(jScrollPane2))))
-                .addContainerGap(64, Short.MAX_VALUE))
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Ficha Técnica", jPanel3);
@@ -949,9 +936,9 @@ public class CadastroBoxeador extends javax.swing.JFrame {
             }
         });
 
-        jLabelListaBoxeadores.setText("Lista de Boxeadores:");
+        jLabelListaNadadores.setText("Lista de Nadadores:");
 
-        jTableListaBoxeadores.setModel(new javax.swing.table.DefaultTableModel 
+        jTableListaNadadores.setModel(new javax.swing.table.DefaultTableModel 
             (
                 null,
                 new String [] {
@@ -964,12 +951,12 @@ public class CadastroBoxeador extends javax.swing.JFrame {
                     return false;
                 }
             });
-            jTableListaBoxeadores.addMouseListener(new java.awt.event.MouseAdapter() {
+            jTableListaNadadores.addMouseListener(new java.awt.event.MouseAdapter() {
                 public void mouseClicked(java.awt.event.MouseEvent evt) {
-                    jTableListaBoxeadoresMouseClicked(evt);
+                    jTableListaNadadoresMouseClicked(evt);
                 }
             });
-            jScrollPane4.setViewportView(jTableListaBoxeadores);
+            jScrollPane4.setViewportView(jTableListaNadadores);
 
             javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
             getContentPane().setLayout(layout);
@@ -980,7 +967,7 @@ public class CadastroBoxeador extends javax.swing.JFrame {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabelListaBoxeadores)
+                                .addComponent(jLabelListaNadadores)
                                 .addGroup(layout.createSequentialGroup()
                                     .addComponent(jButtonNovo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -994,7 +981,7 @@ public class CadastroBoxeador extends javax.swing.JFrame {
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(jButtonCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addComponent(jScrollPane4, javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jTabbedPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 761, Short.MAX_VALUE))
+                        .addComponent(jTabbedPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                     .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             );
 
@@ -1012,7 +999,7 @@ public class CadastroBoxeador extends javax.swing.JFrame {
                         .addComponent(jButtonSalvar)
                         .addComponent(jButtonCancelar))
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addComponent(jLabelListaBoxeadores)
+                    .addComponent(jLabelListaNadadores)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                     .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1024,11 +1011,11 @@ public class CadastroBoxeador extends javax.swing.JFrame {
         }// </editor-fold>//GEN-END:initComponents
 
     private void jComboBoxCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxCategoriaActionPerformed
-        this.atualizarCategoriaPeso();
+        this.atualizarCategoriaIdade();
     }//GEN-LAST:event_jComboBoxCategoriaActionPerformed
 
     private void jButtonNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonNovoActionPerformed
-        umBoxeador = null;
+        umNadador = null;
         modoAlteracao = true;
         novoRegistro = true;
         this.limparCampos();
@@ -1058,7 +1045,7 @@ public class CadastroBoxeador extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextFieldPesoPropertyChange
 
     private void jTextFieldPesoFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextFieldPesoFocusLost
-        this.atualizarCategoriaPeso();
+        this.atualizarCategoriaIdade();
     }//GEN-LAST:event_jTextFieldPesoFocusLost
 
     private void jButtonAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAlterarActionPerformed
@@ -1069,8 +1056,8 @@ public class CadastroBoxeador extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonAlterarActionPerformed
 
     private void jButtonExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExcluirActionPerformed
-        this.controleBoxeador.remover(umBoxeador);
-        umBoxeador = null;
+        this.controleNadador.remover(umNadador);
+        umNadador = null;
         this.limparCampos();
         this.carregarListaBoxeadores();
         this.habilitarDesabilitarCampos();
@@ -1099,12 +1086,12 @@ private void jButtonPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//
 }//GEN-LAST:event_jButtonPesquisarActionPerformed
 
     private void pesquisarBoxeador(String nome) {
-        Boxeador boxeadorPesquisado = controleBoxeador.pesquisar(nome);
+        Nadador boxeadorPesquisado = controleNadador.pesquisar(nome);
 
         if (boxeadorPesquisado == null) {
             exibirInformacao("Boxeador não encontrado.");
         } else {
-            this.umBoxeador = boxeadorPesquisado;
+            this.umNadador = boxeadorPesquisado;
             this.preencherCampos();
             this.habilitarDesabilitarCampos();
         }
@@ -1125,17 +1112,33 @@ private void jButtonRemoverPremiacaoActionPerformed(java.awt.event.ActionEvent e
     }
 }//GEN-LAST:event_jButtonRemoverPremiacaoActionPerformed
 
-private void jTableListaBoxeadoresMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableListaBoxeadoresMouseClicked
-    if (jTableListaBoxeadores.isEnabled()) {
-        DefaultTableModel model = (DefaultTableModel) jTableListaBoxeadores.getModel();
-        String nome = (String) model.getValueAt(jTableListaBoxeadores.getSelectedRow(), 0);
+private void jTableListaNadadoresMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableListaNadadoresMouseClicked
+    if (jTableListaNadadores.isEnabled()) {
+        DefaultTableModel model = (DefaultTableModel) jTableListaNadadores.getModel();
+        String nome = (String) model.getValueAt(jTableListaNadadores.getSelectedRow(), 0);
         this.pesquisarBoxeador(nome);
     }
-}//GEN-LAST:event_jTableListaBoxeadoresMouseClicked
+}//GEN-LAST:event_jTableListaNadadoresMouseClicked
 
 private void jTextFieldDataNascimentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldDataNascimentoActionPerformed
 // TODO add your handling code here:
 }//GEN-LAST:event_jTextFieldDataNascimentoActionPerformed
+
+    private void jTextFieldEnvergaduraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldEnvergaduraActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldEnvergaduraActionPerformed
+
+    private void jTextFieldCategoriaIdadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldCategoriaIdadeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldCategoriaIdadeActionPerformed
+
+    private void jTextFieldIdadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldIdadeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldIdadeActionPerformed
+
+    private void jTextFieldTotalMedalhasBronzeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldTotalMedalhasBronzeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldTotalMedalhasBronzeActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAdicionarPremiacao;
@@ -1150,12 +1153,11 @@ private void jTextFieldDataNascimentoActionPerformed(java.awt.event.ActionEvent 
     private javax.swing.JButton jButtonSalvar;
     private javax.swing.JComboBox jComboBoxCategoria;
     private javax.swing.JComboBox jComboBoxEstado;
-    private javax.swing.JComboBox jComboBoxEstilo;
     private javax.swing.JComboBox jComboBoxSexo;
     private javax.swing.JLabel jLabelAltura;
     private javax.swing.JLabel jLabelBairro;
     private javax.swing.JLabel jLabelCategoria;
-    private javax.swing.JLabel jLabelCategoriaPeso;
+    private javax.swing.JLabel jLabelCategoriaIdade;
     private javax.swing.JLabel jLabelCep;
     private javax.swing.JLabel jLabelCidade;
     private javax.swing.JLabel jLabelComplemento;
@@ -1163,25 +1165,24 @@ private void jTextFieldDataNascimentoActionPerformed(java.awt.event.ActionEvent 
     private javax.swing.JLabel jLabelDataNascimento;
     private javax.swing.JLabel jLabelEnvergadura;
     private javax.swing.JLabel jLabelEstado;
-    private javax.swing.JLabel jLabelEstilo;
-    private javax.swing.JLabel jLabelListaBoxeadores;
+    private javax.swing.JLabel jLabelIdade;
+    private javax.swing.JLabel jLabelListaNadadores;
     private javax.swing.JLabel jLabelLogradouro;
     private javax.swing.JLabel jLabelNome;
     private javax.swing.JLabel jLabelNomeMae;
     private javax.swing.JLabel jLabelNomePai;
     private javax.swing.JLabel jLabelNumero;
     private javax.swing.JLabel jLabelPais;
+    private javax.swing.JLabel jLabelPes;
     private javax.swing.JLabel jLabelPeso;
     private javax.swing.JLabel jLabelPremiacoes;
     private javax.swing.JLabel jLabelRg;
     private javax.swing.JLabel jLabelSexo;
     private javax.swing.JLabel jLabelTelefones;
-    private javax.swing.JLabel jLabelTotalDerrotas;
-    private javax.swing.JLabel jLabelTotalDesistencias;
-    private javax.swing.JLabel jLabelTotalEmpates;
-    private javax.swing.JLabel jLabelTotalLutas;
-    private javax.swing.JLabel jLabelTotalVitorias;
-    private javax.swing.JLabel jLabelTotalVitoriasNocaute;
+    private javax.swing.JLabel jLabelTotalCompeticoesParticipadas;
+    private javax.swing.JLabel jLabelTotalMedalhasBronze;
+    private javax.swing.JLabel jLabelTotalMedalhasOuro;
+    private javax.swing.JLabel jLabelTotalMedalhasPrata;
     private javax.swing.JList jListPremiacoes;
     private javax.swing.JList jListTelefones;
     private javax.swing.JPanel jPanel1;
@@ -1193,29 +1194,29 @@ private void jTextFieldDataNascimentoActionPerformed(java.awt.event.ActionEvent 
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTableListaBoxeadores;
+    private javax.swing.JTable jTableListaNadadores;
     private javax.swing.JTextField jTextFieldAltura;
     private javax.swing.JTextField jTextFieldBairro;
-    private javax.swing.JTextField jTextFieldCategoriaPeso;
+    private javax.swing.JTextField jTextFieldCategoriaIdade;
     private javax.swing.JTextField jTextFieldCep;
     private javax.swing.JTextField jTextFieldCidade;
     private javax.swing.JTextField jTextFieldComplemento;
     private javax.swing.JTextField jTextFieldCpf;
     private javax.swing.JTextField jTextFieldDataNascimento;
     private javax.swing.JTextField jTextFieldEnvergadura;
+    private javax.swing.JTextField jTextFieldIdade;
     private javax.swing.JTextField jTextFieldLogradouro;
     private javax.swing.JTextField jTextFieldNome;
     private javax.swing.JTextField jTextFieldNomeMae;
     private javax.swing.JTextField jTextFieldNomePai;
     private javax.swing.JTextField jTextFieldNumero;
     private javax.swing.JTextField jTextFieldPais;
+    private javax.swing.JTextField jTextFieldPes;
     private javax.swing.JTextField jTextFieldPeso;
     private javax.swing.JTextField jTextFieldRg;
-    private javax.swing.JTextField jTextFieldTotalDerrotas;
-    private javax.swing.JTextField jTextFieldTotalDesistencias;
-    private javax.swing.JTextField jTextFieldTotalEmpates;
-    private javax.swing.JTextField jTextFieldTotalLutas;
-    private javax.swing.JTextField jTextFieldTotalNocaute;
-    private javax.swing.JTextField jTextFieldTotalVitorias;
+    private javax.swing.JTextField jTextFieldTotalCompeticoesParticipadas;
+    private javax.swing.JTextField jTextFieldTotalMedalhasBronze;
+    private javax.swing.JTextField jTextFieldTotalMedalhasOuro;
+    private javax.swing.JTextField jTextFieldTotalMedalhasPrata;
     // End of variables declaration//GEN-END:variables
 }
