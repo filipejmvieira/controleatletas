@@ -23,17 +23,12 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="32767" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                  <Group type="103" groupAlignment="1" attributes="0">
                       <Group type="102" attributes="0">
                           <Component id="jLabelTempo" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="32767" attributes="0"/>
-                          <Component id="jTextFieldTempo" min="-2" pref="84" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="112" max="-2" attributes="0"/>
                       </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="jLabelMedalha" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
-                          <Component id="jTextFieldMedalha" min="-2" pref="84" max="-2" attributes="0"/>
-                      </Group>
+                      <Component id="jLabelMedalha" alignment="0" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="103" alignment="0" groupAlignment="1" attributes="0">
                       <Group type="102" attributes="0">
@@ -46,11 +41,14 @@
                               <Component id="jLabelProva" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabelAno" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace min="-2" pref="44" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="64" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jTextFieldAno" min="-2" pref="84" max="-2" attributes="0"/>
-                              <Component id="jTextFieldProva" min="-2" pref="249" max="-2" attributes="0"/>
+                              <Component id="jTextFieldTempo" min="-2" pref="84" max="-2" attributes="0"/>
+                              <Component id="jTextFieldMedalha" min="-2" pref="84" max="-2" attributes="0"/>
+                              <Component id="jTextFieldAno" alignment="0" min="-2" pref="84" max="-2" attributes="0"/>
+                              <Component id="jTextFieldProva" min="-2" pref="213" max="-2" attributes="0"/>
                           </Group>
+                          <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -136,7 +134,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabelTempo">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Tempo:"/>
+        <Property name="text" type="java.lang.String" value="Tempo (seg.):"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="jTextFieldMedalha">

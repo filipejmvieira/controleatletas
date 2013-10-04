@@ -49,6 +49,6 @@ public class Premiacao {
     
     @Override
     public String toString() {
-        return this.prova + ",medalha de " + this.medalha + " em " + this.ano + ",no tempo de " + this.tempo;
+        return this.prova + ",medalha de " + this.medalha + " em " + this.ano + ",no tempo de " + this.tempo + "segundos";
     }
 }
