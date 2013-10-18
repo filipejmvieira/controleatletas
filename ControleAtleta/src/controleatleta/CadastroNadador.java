@@ -357,15 +357,15 @@ public class CadastroNadador extends javax.swing.JFrame {
         }
         modoAlteracao = false;
         novoRegistro = false;
-        this.carregarListaBoxeadores();
+        this.carregarListaNadadores();
         this.habilitarDesabilitarCampos();
     }
 
-    private void carregarListaBoxeadores() {
-        ArrayList<Nadador> listaBoxeadores = controleNadador.getListaNadadores();
+    private void carregarListaNadadores() {
+        ArrayList<Nadador> listaNadadores = controleNadador.getListaNadadores();
         DefaultTableModel model = (DefaultTableModel) jTableListaNadadores.getModel();
         model.setRowCount(0);
-        for (Nadador b : listaBoxeadores) {
+        for (Nadador b : listaNadadores) {
             model.addRow(new String[]{b.getNome(), b.getCpf()});
         }
         jTableListaNadadores.setModel(model);
@@ -1059,7 +1059,7 @@ public class CadastroNadador extends javax.swing.JFrame {
         this.controleNadador.remover(umNadador);
         umNadador = null;
         this.limparCampos();
-        this.carregarListaBoxeadores();
+        this.carregarListaNadadores();
         this.habilitarDesabilitarCampos();
     }//GEN-LAST:event_jButtonExcluirActionPerformed
 
@@ -1079,19 +1079,19 @@ private void jButtonRemoverTelefoneActionPerformed(java.awt.event.ActionEvent ev
 }//GEN-LAST:event_jButtonRemoverTelefoneActionPerformed
 
 private void jButtonPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPesquisarActionPerformed
-    String pesquisa = JOptionPane.showInputDialog("Informe o nome do Boxeador.");
+    String pesquisa = JOptionPane.showInputDialog("Informe o nome do Nadador.");
     if (pesquisa != null) {
-        this.pesquisarBoxeador(pesquisa);
+        this.pesquisarNadador(pesquisa);
     }
 }//GEN-LAST:event_jButtonPesquisarActionPerformed
 
-    private void pesquisarBoxeador(String nome) {
-        Nadador boxeadorPesquisado = controleNadador.pesquisar(nome);
+    private void pesquisarNadador(String nome) {
+        Nadador nadadorPesquisado = controleNadador.pesquisar(nome);
 
-        if (boxeadorPesquisado == null) {
-            exibirInformacao("Boxeador não encontrado.");
+        if (nadadorPesquisado == null) {
+            exibirInformacao("Nadador não encontrado.");
         } else {
-            this.umNadador = boxeadorPesquisado;
+            this.umNadador = nadadorPesquisado;
             this.preencherCampos();
             this.habilitarDesabilitarCampos();
         }
@@ -1116,7 +1116,7 @@ private void jTableListaNadadoresMouseClicked(java.awt.event.MouseEvent evt) {//
     if (jTableListaNadadores.isEnabled()) {
         DefaultTableModel model = (DefaultTableModel) jTableListaNadadores.getModel();
         String nome = (String) model.getValueAt(jTableListaNadadores.getSelectedRow(), 0);
-        this.pesquisarBoxeador(nome);
+        this.pesquisarNadador(nome);
     }
 }//GEN-LAST:event_jTableListaNadadoresMouseClicked
 
